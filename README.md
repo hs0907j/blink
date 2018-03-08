@@ -1,6 +1,5 @@
-# blink
+# Capstone Design Assingment 1 - Blink Class, Sogang Univercity spring semester 2018.
 
-# *Capstone Design Assingment 1 - Blink Class, Sogang Univercity spring semester 2018.
 
 > ## 1. Variables
 
