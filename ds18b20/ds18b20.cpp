@@ -5,7 +5,7 @@ ds18b20::ds18b20(int pin, const char* Name, const char* PW, const char* Key, con
 	wifiName = Name;
 	wifiPW = PW;
 	apiKey = Key;
-  server = Serv;
+	server = Serv;
   
 	pWire = new OneWire(pinNumber);
 	pDallas = new DallasTemperature(pWire);
