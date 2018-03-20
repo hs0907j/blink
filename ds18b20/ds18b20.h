@@ -1,6 +1,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <ESP8266WiFi.h>
+
 #define LINE
 
 class ds18b20 {
@@ -21,5 +22,4 @@ public:
 	void setup(void);
 	float getTemperature(void);
 	void sendTemperature(float temp);
-	
 };

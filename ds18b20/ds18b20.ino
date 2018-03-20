@@ -18,6 +18,7 @@ void setup(void)
 void loop(void)
 {
   ds.sendTemperature(ds.getTemperature());
+  
   #ifdef LINE
   delay(5000);
   #endif
