@@ -1,11 +1,12 @@
 #include "ds18b20.h"
 
-ds18b20::ds18b20(int pin, const char* Name, const char* PW, const char* Key) {
+ds18b20::ds18b20(int pin, const char* Name, const char* PW, const char* Key, const char* Serv) {
 	pinNumber = pin;
 	wifiName = Name;
 	wifiPW = PW;
 	apiKey = Key;
-
+  server = Serv;
+  
 	pWire = new OneWire(pinNumber);
 	pDallas = new DallasTemperature(pWire);
 }
@@ -50,13 +51,22 @@ float ds18b20::getTemperature(void) {
 
 void ds18b20::sendTemperature(float temp) {
 	WiFiClient client;
-
-	if (client.connect(server, 80)) { // use ip 184.106.153.149 or api.thingspeak.com
+  
+	if (client.connect(server, 80)) {
 		String postStr = apiKey;
+    
+    #ifdef LINE
+    client.print("GET https://maker.ifttt.com/trigger/hot_temp/with/key/b3P2r1H7PE6JVxLo1KnvEj?value1=");
+    client.print(String(temp));
+    client.print("\r\n\r\n");
+    Serial.println("now WiFi Client connected and sending to IFTTT over\n");
+    #endif
+    
+    #ifndef LINE
 		postStr += "&field1=";
 		postStr += String(temp);
 		postStr += "\r\n\r\n";
-
+    
 		client.print("POST /update HTTP/1.1\n");
 		client.print("Host: api.thingspeak.com\n");
 		client.print("Connection: close\n");
@@ -66,9 +76,12 @@ void ds18b20::sendTemperature(float temp) {
 		client.print(postStr.length());
 		client.print("\n\n");
 		client.print(postStr);
-		Serial.println("now WiFi Client connected and sending over\n");
-	}//end if
+    Serial.println("now WiFi Client connected and sending to ThingSpeak over\n");
+    #endif
+    
+		
+	}
 
 	client.stop();
-}//end send
+}
 
